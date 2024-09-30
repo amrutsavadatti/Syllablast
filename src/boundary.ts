@@ -6,7 +6,6 @@ const OFFSET:number = 10;
 
 export function computeSquare (s: Syllable) {
     const p = s.getPosition();
-    // let sq = new Square(p.col * BOXSIZE + (p.col+1)*OFFSET, p.row * BOXSIZE + (p.row+1)*OFFSET);
     let sq = new Square(p.row * BOXSIZE + (p.row+1)*OFFSET, p.col * BOXSIZE + (p.col+1)*OFFSET);
     return sq;
 }
@@ -14,29 +13,36 @@ export function computeSquare (s: Syllable) {
 function setBoxText(text:string, context:any, square:any) {
     context.font = '20px Arial';
     context.fillStyle = 'white'
-    const textWidth = context.measureText(text).width;
-    const textX = square.col + (BOXSIZE - textWidth) / 2;
-    const textY = square.row + (BOXSIZE + 20) / 2;
+    let textWidth = context.measureText(text).width;
+    let textX = square.col + (BOXSIZE - textWidth) / 2;
+    let textY = square.row + (BOXSIZE + 20) / 2;
     context.fillText(text, textX, textY);
 }
 
 export function drawPuzzle (context:any, game: Game) {
     let seledted = game.selectedSyllables;
     
-    // let selectedSyllable = game
-    game.syllable.forEach(s => {
-        let square = computeSquare(s);
-        console.log(game.selectedSyllables)
-    
-        if (seledted.includes(s)) {
-            context.fillStyle = "#34495e";
-            
-        } else {
-            context.fillStyle = "orange";
+    let syllableArr = game.syllable;
+    console.log("syllableArr");
+    console.log(syllableArr);
+    for (let w of syllableArr) {
+        for (let s of w) {
+            let square = computeSquare(s);
+
+            if (s.correctPosition) {
+                context.fillStyle = "#2ecc71";
+            }
+            if (seledted.includes(s)) {
+                context.fillStyle = "#34495e";
+                
+            } else {
+                context.fillStyle = "orange";
+            }
+            context.fillRect(square.col, square.row, square.side, square.side);
+            // console.log(s.name);
+            setBoxText(s.name.toUpperCase(), context, square);
         }
-        context.fillRect(square.col, square.row, square.side, square.side)
-        setBoxText(s.name.toUpperCase(), context, square)
-    })
+    }
 }
 
 export class Square {
@@ -55,12 +61,15 @@ export class Square {
 }
 
 
-export function redrawCanvas(model:Model, canvasObj:any ) {
+export function redrawCanvas(model:Model, canvasObj:any, a:boolean = true) {
 
-    const context = canvasObj.getContext('2d');
+    console.log('redrawing canvas');
+    let context = canvasObj.getContext('2d');
     context.clearRect(0, 0, canvasObj.width, canvasObj.height);
  
-    if (model.game) {
-        drawPuzzle(context, model.game);
+    if (a) {
+        if (model.game) {
+            drawPuzzle(context, model.game);
+        }
     }
 }

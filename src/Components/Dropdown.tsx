@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 export default function Dropdown() {
-    const [selectedValue, setSelectedValue] = useState(''); // Default empty selection
+    const [selectedValue, setSelectedValue] = useState('1'); // Default empty selection
 
     const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedValue(event.target.value); // Update state when selection changes
