@@ -36,3 +36,41 @@ body {
 .puzzle {
   border-width: 2px;
 }
+
+.background {
+  display : flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+  padding: 10rem;
+}
+
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(4, 100px);
+  grid-template-rows: repeat(4, 100px);
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+.grid-button {
+  width: 100px;
+  height: 100px;
+  border: 2px solid black;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.grid-button.default {
+  background-color: #FF5733;
+}
+
+.grid-button.selected {
+  background-color: #34495e;
+}
+
+.grid-button.correct {
+  background-color: #2ecc71;
+}

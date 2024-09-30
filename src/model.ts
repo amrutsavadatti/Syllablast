@@ -17,6 +17,7 @@ export class Model {
         this.isComplete = false;
         this.score = 0;
         this.swaps = 0;
+        this.computeScore();
     }
 
     undo() {
@@ -49,7 +50,9 @@ export class Model {
     
             let syllables =  this.game.syllable;
             syllables[position1.row][position1.col] = this.game.selectedSyllables[1];
+            syllables[position1.row][position1.col].position = new Position(position1.row, position1.col);
             syllables[position2.row][position2.col] = this.game.selectedSyllables[0];
+            syllables[position2.row][position2.col].position = new Position(position2.row, position2.col);
     
             console.log("this is syllables")
             console.log(syllables)
@@ -65,8 +68,15 @@ export class Model {
         let score = 0;
         let master = this.game?.winCondition;
         let scrambledMatrix = this.game?.syllable;
-        console.log("scrambledMatrix");
-        console.log(scrambledMatrix);
+
+        scrambledMatrix.forEach(row => {
+            // Iterate through each syllable in the row
+            row.forEach(syllable => {
+                // Set the correctPosition property to false
+                syllable.setCorrectPosition(false);
+            });
+        });
+
         for (let i =0; i < scrambledMatrix.length; i++) {
             let scrambledWord = scrambledMatrix[i];
             
@@ -74,9 +84,11 @@ export class Model {
                 let continuous = true;
                 for (let k=0; k < master[j].length; k++) {
                     if (scrambledWord[k].name === master[j][k]) {
+                        scrambledWord[k].setCorrectPosition(true);
                         score++;
                     } 
                     else {
+                        // scrambledWord[k].setCorrectPosition(false);
                         break;
                     } 
                 }
@@ -84,8 +96,29 @@ export class Model {
 
         }
 
+        // for (let i=0; i < scrambledMatrix.length; i++) {
+        //     // let scrambledWord = scrambledMatrix[i];
+            
+        //     for (let j=0; j < master?.length; j++) {
+        //         let continuous = true;
+        //         for (let k=0; k < master[j].length; k++) {
+        //             if (scrambledMatrix[i][k].name === master[j][k]) {
+        //                 scrambledMatrix[i][k].setCorrectPosition(true);
+        //                 score++;
+        //                 console.log("intermideate score : " + score + " i : " + i + " j : " + j + " k : " + k);
+        //             } 
+        //             else {
+        //                 // scrambledMatrix[i][k].setCorrectPosition(false);
+        //                 break;
+        //             } 
+        //         }
+        //     }
+
+        // }
+
+        this.game.syllable = scrambledMatrix;
         this.score = score;
-        console.log(score);
+        console.log("## This is SCORE " + score);
     }
 
     checkComplete() {
@@ -128,15 +161,25 @@ export class Game {
     }
 
     setSelectedSyllable(s: Syllable) {
-        if (this.selectedSyllables.includes(s)) {
-            this.selectedSyllables.splice(this.selectedSyllables.indexOf(s), 1);
+        let selected = [...this.selectedSyllables];
+        if (selected.includes(s)) {
+            selected.splice(this.selectedSyllables.indexOf(s), 1);
+        }else {
+            selected.push(s);
         }
-        else if (this.selectedSyllables.length >= 2) {
-            this.selectedSyllables.shift();
-            this.selectedSyllables.push(s);
-        } else {
-            this.selectedSyllables.push(s);
-        }
+
+        this.selectedSyllables = selected;
+
+
+        // if (this.selectedSyllables.includes(s)) {
+        //     this.selectedSyllables.splice(this.selectedSyllables.indexOf(s), 1);
+        // }
+        // else if (this.selectedSyllables.length >= 2) {
+        //     this.selectedSyllables.shift();
+        //     this.selectedSyllables.push(s);
+        // } else {
+        //     this.selectedSyllables.push(s);
+        // }
     }
 
     truncateSelection() {
@@ -168,7 +211,7 @@ export class Syllable {
     }
 
     setCorrectPosition(val:boolean) {
-        this.correctPosition = true;
+        this.correctPosition = val;
     }
 
 }

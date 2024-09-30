@@ -61,15 +61,15 @@ export class Square {
 }
 
 
-export function redrawCanvas(model:Model, canvasObj:any, a:boolean = true) {
+// export function redrawCanvas(model:Model, canvasObj:any, a:boolean = true) {
 
-    console.log('redrawing canvas');
-    let context = canvasObj.getContext('2d');
-    context.clearRect(0, 0, canvasObj.width, canvasObj.height);
+//     console.log('redrawing canvas');
+//     let context = canvasObj.getContext('2d');
+//     context.clearRect(0, 0, canvasObj.width, canvasObj.height);
  
-    if (a) {
-        if (model.game) {
-            drawPuzzle(context, model.game);
-        }
-    }
-}
+//     if (a) {
+//         if (model.game) {
+//             drawPuzzle(context, model.game);
+//         }
+//     }
+// }
