@@ -1,5 +1,3 @@
-// import { configs } from "./puzzle";
-
 export class Model {
     game: Game | undefined;
     gameHistory: Array<Swap> = [];
@@ -106,15 +104,11 @@ export class Model {
 
 export class Game {
     config: number;
-    readonly numRows: number;
-    readonly numColumns: number;
     syllable: Syllable[][];
     selectedSyllables: Array<Syllable> = [];
     winCondition: string[][] | undefined;
 
     constructor(configDetails: any) {
-        this.numRows = configDetails.rows;
-        this.numColumns = configDetails.cols;
         this.config = configDetails.id;
         this.syllable = [];
 
@@ -122,7 +116,6 @@ export class Game {
             const word = configDetails?.initial[i];
             let subArr = [];
             for (let j = 0; j < word.length; j++) {
-                // this.syllable.push(new Syllable(word[j], new Position(i, j)));
                 subArr.push(new Syllable(word[j], new Position(i, j)));
             }
             this.syllable.push(subArr);
