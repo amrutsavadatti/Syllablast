@@ -24,19 +24,37 @@ export class Model {
         if (this.isComplete !== true) {
             if(this.gameHistory.length > 0) {
                 const history = this.gameHistory.pop();
-                console.log(history);
-                let position1 = history?.swap[0].getPosition();
-                let position2 = history?.swap[1].getPosition();
+                let position1 = history.swap[0].getPosition();
+                let position2 = history.swap[1].getPosition();
         
                 let syllables =  this.game.syllable;
-                syllables[position1.row][position1.col] = history?.swap[0];
-                syllables[position2.row][position2.col] = history?.swap[1];
+                syllables[position1.row][position1.col] = history.swap[1];
+                syllables[position1.row][position1.col].position = new Position(position1.row, position1.col);
+                syllables[position2.row][position2.col] = history.swap[0];
+                syllables[position2.row][position2.col].position = new Position(position2.row, position2.col);
         
-                console.log("this is syllables")
-                console.log(syllables)
                 this.game.syllable = syllables;
                 this.swaps--;
                 this.computeScore();
+
+
+
+                // const history = this.gameHistory.pop();
+                // console.log(history);
+                // let position1 = history?.swap[0].getPosition();
+                // let position2 = history?.swap[1].getPosition();
+        
+                // let syllables =  this.game.syllable;
+                // syllables[position1.row][position1.col] = history?.swap[0];
+                // syllables[position1.row][position1.col].position = new Position(position1.row, position1.col);
+                // syllables[position2.row][position2.col] = history?.swap[1];
+                // syllables[position2.row][position2.col].position = new Position(position2.row, position2.col);
+        
+                // console.log("this is syllables")
+                // console.log(syllables)
+                // this.game.syllable = syllables;
+                // this.swaps--;
+                // this.computeScore();
             }
         }
 
@@ -57,7 +75,7 @@ export class Model {
             console.log("this is syllables")
             console.log(syllables)
             this.game.syllable = syllables;
-            this.gameHistory.push(new Swap(this.game?.getSelectedSyllables()));
+            this.gameHistory.push(new Swap([this.game.selectedSyllables[0], this.game.selectedSyllables[1]]));
             this.game?.truncateSelection();
             this.swaps++;
             this.computeScore();
@@ -118,7 +136,7 @@ export class Model {
 
         this.game.syllable = scrambledMatrix;
         this.score = score;
-        console.log("## This is SCORE " + score);
+        console.log("## This is SCORE " + this.score);
     }
 
     checkComplete() {

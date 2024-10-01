@@ -14,7 +14,7 @@ export default function Home() {
   
   // initial instantiation of the Model comes from the actualPuzzle
   let currentConfig: number = 1;
-  const [model, setModel] =  React.useState(new Model(allConfigs, currentConfig));
+  const [model, setModel] =  React.useState(new Model(allConfigs, currentConfig, true));
   const [redraw, setRedraw] = React.useState(0);
 
   const canvasRef = React.useRef(null)   // Later need to be able to refer to App
@@ -80,11 +80,9 @@ export default function Home() {
   }
   
   function handleUndo(model: any) {
+    console.log("UNDO INVOKED");
     model.undo();
-    // setRedraw(redraw+1);
-    redrawCanvas(model, canvasRef.current);
-    console.log("model hai yw")
-    console.log(model);
+    setRedraw(redraw+1);
   }
 
   function refresh(m:Model) {
@@ -136,13 +134,14 @@ export default function Home() {
 
 
 
-    
-    model.game.setSelectedSyllable(model.game?.syllable[rowIndex][colIndex]);
-    console.log(model);
-    if (model.game.selectedSyllables.length === 2) {
-      handleSwap(model);
+    if (!model.isComplete) {
+      model.game.setSelectedSyllable(model.game?.syllable[rowIndex][colIndex]);
+      console.log(model);
+      if (model.game.selectedSyllables.length === 2) {
+        handleSwap(model);
+      }
+      setRedraw(redraw+1);
     }
-    setRedraw(redraw+1);
   };
 
   const getClassName = (cell: Syllable) => {
@@ -178,7 +177,24 @@ export default function Home() {
       ))
     )}
   </div>
+  <div className="buttons">
+       <button data-testid="reset" className="button resetBtn"  onClick={(e) => changeConfig(1)}> Game 1 </button>
+       <button data-testid="reset" className="button resetBtn"  onClick={(e) => changeConfig(2)}> Game 2 </button>
+       <button data-testid="reset" className="button resetBtn"  onClick={(e) => changeConfig(3)}> Game 3 </button>
+    </div>
+
+     <div className="buttons">
+       <button data-testid="reset" className="button resetBtn"  onClick={(e) => changeConfig(currentConfig)}>Reset</button>
+       <br />
+       <button data-testid="swap" className="button undoBtn"    onClick={(e) => handleUndo(model)} >Undo</button>
+       
+     </div>
 </div>
+
+
+
 );
 
 }
+
+    
