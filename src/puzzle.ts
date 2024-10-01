@@ -6,9 +6,9 @@ const configs = [
         "name": "Config #1",
         "words" : [ "in,vis,i,ble" , "im,mac,u,late" , "af,fil,i,ate" , "un,der,wa,ter" ],
         "initial": [ ['ter','ate','ble','der'],
-                        ['in','vis','im','i'],
+                        ['fil','in','im','i'],
                         ['i','late','mac','un'],
-                        ['u','fil','af','wa']
+                        ['u','vis','af','wa']
             ]
     },
     {

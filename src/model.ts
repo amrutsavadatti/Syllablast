@@ -36,25 +36,6 @@ export class Model {
                 this.game.syllable = syllables;
                 this.swaps--;
                 this.computeScore();
-
-
-
-                // const history = this.gameHistory.pop();
-                // console.log(history);
-                // let position1 = history?.swap[0].getPosition();
-                // let position2 = history?.swap[1].getPosition();
-        
-                // let syllables =  this.game.syllable;
-                // syllables[position1.row][position1.col] = history?.swap[0];
-                // syllables[position1.row][position1.col].position = new Position(position1.row, position1.col);
-                // syllables[position2.row][position2.col] = history?.swap[1];
-                // syllables[position2.row][position2.col].position = new Position(position2.row, position2.col);
-        
-                // console.log("this is syllables")
-                // console.log(syllables)
-                // this.game.syllable = syllables;
-                // this.swaps--;
-                // this.computeScore();
             }
         }
 
@@ -88,9 +69,7 @@ export class Model {
         let scrambledMatrix = this.game?.syllable;
 
         scrambledMatrix.forEach(row => {
-            // Iterate through each syllable in the row
             row.forEach(syllable => {
-                // Set the correctPosition property to false
                 syllable.setCorrectPosition(false);
             });
         });
@@ -106,34 +85,12 @@ export class Model {
                         score++;
                     } 
                     else {
-                        // scrambledWord[k].setCorrectPosition(false);
                         break;
                     } 
                 }
             }
 
         }
-
-        // for (let i=0; i < scrambledMatrix.length; i++) {
-        //     // let scrambledWord = scrambledMatrix[i];
-            
-        //     for (let j=0; j < master?.length; j++) {
-        //         let continuous = true;
-        //         for (let k=0; k < master[j].length; k++) {
-        //             if (scrambledMatrix[i][k].name === master[j][k]) {
-        //                 scrambledMatrix[i][k].setCorrectPosition(true);
-        //                 score++;
-        //                 console.log("intermideate score : " + score + " i : " + i + " j : " + j + " k : " + k);
-        //             } 
-        //             else {
-        //                 // scrambledMatrix[i][k].setCorrectPosition(false);
-        //                 break;
-        //             } 
-        //         }
-        //     }
-
-        // }
-
         this.game.syllable = scrambledMatrix;
         this.score = score;
         console.log("## This is SCORE " + this.score);
@@ -187,17 +144,6 @@ export class Game {
         }
 
         this.selectedSyllables = selected;
-
-
-        // if (this.selectedSyllables.includes(s)) {
-        //     this.selectedSyllables.splice(this.selectedSyllables.indexOf(s), 1);
-        // }
-        // else if (this.selectedSyllables.length >= 2) {
-        //     this.selectedSyllables.shift();
-        //     this.selectedSyllables.push(s);
-        // } else {
-        //     this.selectedSyllables.push(s);
-        // }
     }
 
     truncateSelection() {
