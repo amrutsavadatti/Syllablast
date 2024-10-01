@@ -2,13 +2,12 @@
 import React from "react";
 
 import { configs } from "../puzzle";
-import { Model, Syllable } from "../model";
+import { Model, Position, Syllable } from "../model";
 
 const allConfigs = configs;
 
 export default function Home() {
 
-  
   // initial instantiation of the Model comes from the actualPuzzle
   let currentConfig: number = 1;
   const [model, setModel] =  React.useState(new Model(allConfigs, currentConfig));
@@ -51,26 +50,23 @@ export default function Home() {
 
   const getClassName = (cell: Syllable) => {
     let newClassName = 'grid-button default'
-    if (cell.correctPosition === true) {
-      newClassName = 'grid-button correct';
-    }
-    if (model.game.selectedSyllables.includes(cell)) {
-      newClassName = 'grid-button selected';
-    }
+    if (cell.correctPosition === true) {newClassName = 'grid-button correct';}
+    if (model.game.selectedSyllables.includes(cell)) {newClassName = 'grid-button selected';}
     return newClassName;
   };
 
   function getGridContent(model:Model) {
     if (model.isComplete) {
-      return <h1 className=" center red">Congrats you won !!!</h1>
+      return <h1 data-testid="congrats_msg" className=" center red">Congrats you won !!!</h1>
     } else {
       return (
           <div className="grid-container">
             {model.game?.syllable.map((row, rowIndex) =>
               row.map((cell, colIndex) => (
                 <button
+                  data-testid={cell.name}
                   key={`${rowIndex}-${colIndex}`}
-                  className={`grid-button ${getClassName(cell)}`}
+                  className={`grid-button ${getClassName(cell)} `}
                   onClick={() => handleClick(rowIndex, colIndex, model)}
                 >
                   {cell.name.toUpperCase()}
@@ -95,21 +91,26 @@ export default function Home() {
         <button data-testid="game_2" className="stylish-btn"  onClick={(e) => changeConfig(2)}> Game 2 </button>
         <button data-testid="game_3" className="stylish-btn"  onClick={(e) => changeConfig(3)}> Game 3 </button>
       </div>
-      <label data-testid="nummoves" className="center game_heading">{"Selected Game: " + getSelectedGame(model)}</label>
+      <label data-testid="label_game" className="center game_heading">{"Selected Game: " + getSelectedGame(model)}</label>
     </div>
 
 
     <div className="labels center ">
-      <label data-testid="nummoves" className="nummoves center center_apart game_heading">{"Swaps: " + model.swaps}</label>
-      <label data-testid="nummoves" className="nummoves center center_apart game_heading">{"Score: " + model.score}</label>
+      <label data-testid="swaps" className="nummoves center center_apart game_heading">{"Swaps: " + model.swaps}</label>
+      <label data-testid="score" className="nummoves center center_apart game_heading">{"Score: " + model.score}</label>
     </div>
 
     <div className="buttons apart">
       <button data-testid="reset" className="stylish-btn resetBtn"  onClick={(e) => changeConfig(currentConfig)}>Reset</button>
       <br />
-      <button data-testid="swap" className="stylish-btn undoBtn"    onClick={(e) => handleUndo(model)} >Undo</button>
-      
+      <button data-testid="undo" className="stylish-btn undoBtn"    onClick={(e) => handleUndo(model)} >Undo</button>
     </div>
+
+    <button data-testid="swap_btn" onClick={(e) => handleSwap(model)}></button>
+    <button data-testid="clk_btn" onClick={(e) => handleClick(0, 0, model)}></button>
+    <button data-testid="clk_btn2" onClick={(e) => handleClick(0, 1, model)}></button>
+    <button data-testid="congrats" onClick={(e) => getGridContent(model)}></button>
+    <button data-testid="correct" onClick={(e) => getClassName(new Syllable("A", new Position(0,0), true))}></button>
 </div>
 );
 

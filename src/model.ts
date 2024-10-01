@@ -158,9 +158,10 @@ export class Syllable {
     position: Position;
     correctPosition: boolean = false;
 
-    constructor(n: string, p: Position) {
+    constructor(n: string, p: Position, correctPosition:boolean = false) {
         this.name = n;
         this.position = p;
+        this.correctPosition = correctPosition
     }
 
     getPosition() {
